@@ -10,16 +10,10 @@ jobs:
         uses: actions/npm@master
         with:
           args: install
-      - name: docker build
-        uses: actions/cli@master
-        with:
-          args: build -t ugoslim/nodebackend .
       - name: docker login
-        uses: actions/login@master
-        env:
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        run: docker login --username "${{ secrets.Docker_username }}" --password "${{ secrets.Docker_password }}"
+      - name: Docker build
+        run: docker build . --file Dockerfile --tag ugoslim/nodebackend
       - name: docker push
-        uses: actions/cli@master
-        with:
-          args: push ugoslim/nodebackend
+        run: docker push ugoslim/nodebackend
+ 
