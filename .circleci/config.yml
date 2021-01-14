@@ -1,13 +1,25 @@
 version: 2.1
-
-# Define the jobs we want to run for this project
 jobs:
   build:
-    docker:
-      - image: ugoslim/nodebackend
-        auth:
-          username: ugoslim
-          password: Kunr@Duru17  # context / project UI env-var reference
+    machine: circleci/node:12
+
+    working_directory: ~/ajo_node
+
     steps:
       - checkout
-      - run: echo "this is the build job"
+      - setup_remote_docker:
+
+      - run:
+         name: Build Docker image
+         command: docker build --cache-from=app -t ugoslim/nodebackend .
+
+      - run:
+          name: Push to DockerHub
+          command: |
+            docker login -u $DOCKER_USERNAME -p $DOCKERHUB_PASSWORD
+            docker push ugoslim/backend
+     
+workflows:
+  version: 2.1
+  jobs:
+      - build
