@@ -52,5 +52,7 @@ jobs:
 
       - name: Log into registry
         run: docker login --username "${{ secrets.Docker_username }}" --password "${{ secrets.Docker_password }}"
+      - name: Docker tag
+        run: docker tag $IMAGE_NAME $IMAGE_NAME
       - name: Push image
         run: docker push ugoslim/nodebackend
