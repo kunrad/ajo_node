@@ -10,14 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: npm install
-        uses: actions/npm@v2
-        with:
-          args: install
-      - name: docker login
-        run: docker login --username "${{ secrets.Docker_username }}" --password "${{ secrets.Docker_password }}"
       - name: Docker build
         run: docker build . --file Dockerfile --tag ugoslim/nodebackend
+      - name: docker login
+        run: docker login --username "${{ secrets.Docker_username }}" --password "${{ secrets.Docker_password }}"
       - name: docker push
         run: docker push ugoslim/nodebackend
  
